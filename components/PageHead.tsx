@@ -4,6 +4,9 @@ import type * as types from '@/lib/types'
 import * as config from '@/lib/config'
 import { getSocialImageUrl } from '@/lib/get-social-image-url'
 
+
+// Page head is responsible fro showing the layout of the page by passing the below props
+// title that shows on 
 export function PageHead({
   site,
   title,

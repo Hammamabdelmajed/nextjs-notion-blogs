@@ -117,7 +117,7 @@ const Equation = dynamic(() =>
 const Pdf = dynamic(
   () => import('react-notion-x/build/third-party/pdf').then((m) => m.Pdf),
   {
-    ssr: false
+    ssr: false // ssr = server side rendering
   }
 )
 const Modal = dynamic(
@@ -132,7 +132,9 @@ const Modal = dynamic(
 )
 
 function Tweet({ id }: { id: string }) {
-  const { recordMap } = useNotionContext()
+  
+  const { recordMap } = useNotionContext(); // is used to access the current notion rendering context (e.g recordMap and helper maps)
+
   const tweet = (recordMap as types.ExtendedTweetRecordMap)?.tweets?.[id]
 
   return (
@@ -183,6 +185,21 @@ const propertyTextValue = (
   return defaultFn()
 }
 
+
+/*
+
+High-level purpose
+
+    - NotionPage is the top-level page composition that renders a single Notion page using react-notion-x. It:
+    - Prepares helper components and value-overrides for Notion properties.
+    - Computes SEO and social metadata.
+    - Configures NotionRenderer with routing, image mapping, search, theme, ToC, and optional blocks (Code, Equation, Pdf, Modal, Tweet).
+    - Handles loading/fallback and 404 states.
+    - Adds a page aside and footer into the renderer’s layout.
+
+*/
+
+
 export function NotionPage({
   site,
   recordMap,
@@ -191,6 +208,14 @@ export function NotionPage({
 }: types.PageProps) {
   const router = useRouter()
   const lite = useSearchParam('lite')
+
+   /*
+
+   Main Notion React components are these :
+    1. site: info about the site (domain , name , rootNotionPageId)
+    2. recordMap : data structure representing the Notion page content and metadata
+    
+   */
 
   const components = React.useMemo<Partial<NotionComponents>>(
     () => ({
@@ -215,6 +240,8 @@ export function NotionPage({
 
   const { isDarkMode } = useDarkMode()
 
+  console.log("Checking the state of dark mode",isDarkMode)
+
   const siteMapPageUrl = React.useMemo(() => {
     const params: any = {}
     if (lite) params.lite = lite
@@ -233,6 +260,11 @@ export function NotionPage({
 
   const showTableOfContents = !!isBlogPost
   const minTableOfContentsItems = 3
+
+  console.log("block", block);
+  console.log("recordMap", recordMap);
+  console.log("isBlogPost", isBlogPost);
+
 
   const pageAside = React.useMemo(
     () => (

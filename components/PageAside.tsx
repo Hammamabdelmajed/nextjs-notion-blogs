@@ -19,6 +19,9 @@ export function PageAside({
   }
 
   // only display comments and page actions on blog post pages
+  // In Notion-style React libraries, “tweets” simply means embedded X/Twitter posts inside a Notion page.
+  // Nothing deeper than that. It’s literally an embed block type.  
+  
   if (isBlogPost) {
     const tweet = getPageTweet(block, recordMap)
     if (!tweet) {

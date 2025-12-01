@@ -15,6 +15,8 @@ export async function resolveNotionPage(
   let pageId: string | undefined
   let recordMap: ExtendedRecordMap
 
+  console.log("site",site);
+
   if (rawPageId && rawPageId !== 'index') {
     pageId = parsePageId(rawPageId)!
 

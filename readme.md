@@ -1,3 +1,116 @@
+
+# Here I will be explaining Structure and how to work with Next.js
+
+Great question. This project is using Next.js’ “pages” router (pre–App Router) rather than the newer “app” directory with RootLayout. That’s why you don’t see an app/RootLayout.tsx or layout.tsx file.
+
+How it works here
+
+Routing: It uses the pages/ directory. Each file under pages/ corresponds to a route. For dynamic Notion pages, there’s typically a catch‑all route (e.g., pages/[slug].tsx or similar) that fetches Notion content and renders it via the NotionRenderer.
+
+Layout: Instead of a single RootLayout, layout concerns are handled directly inside page components and shared components:
+
+# Head/meta/SEO: components/PageHead.tsx sets meta tags, Open Graph/Twitter tags, RSS, and structured data for blog posts.
+# How does the process of RSS feed work :
+
+1. at starter the project at build time compiles your Notion pages into an RSS XML String 
+2. fetches all notion pages through a pre defined function 
+3. Map each post to an RSS item with title , link (canonical URL) then serilaized the channel + items to XML
+
+Then the ins of how to write code for RSS feed is by using rss.ts library and checking the documents
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+
+# Header/nav: components/NotionPageHeader.tsx renders breadcrumb navigation and optional nav links based on config.
+
+1. it uses navigation links from congif lib and filter them based on pageId and index
+2. if not the page will not be rendered 
+3. also something that might be a good highlight part of SSR compatability by using hasMounted check to avoid hydration mismatch between client and server side
+
+------------------------------------------------------------------------------------------------------
+
+# Aside/actions: components/PageAside.tsx conditionally renders social actions or comments, especially on blog posts.
+
+- pulling out embeded tweet links from within notion pages 
+
+------------------------------------------------------------------------------------------------------
+
+
+# Footer: components/Footer.tsx is memoized and passed into the renderer.
+
+# Global body classes: react-body-classname is used in NotionPage to attach classes like notion-lite and dark-mode to the body.
+
+----------------------------------------------------------------------------------------------------------------
+
+# Page composition: components/NotionPage.tsx is effectively the “root page layout” for Notion content. It:
+
+Configures NotionRenderer (react-notion-x) with dynamic third-party components (Code, Collection, Equation, Pdf, Modal, Tweet).
+
+Computes SEO data (title, description, social image) and renders PageHead at the top.
+
+Sets flags like showTableOfContents, previewImages, and passes mapPageUrl/mapImageUrl functions and searchNotion for site-wide behavior.
+
+Supplies pageAside and footer as React nodes to NotionRenderer, which acts like a layout shell.
+
+Handles loading/fallback and 404 via Loading and Page404.
+
+Server vs client config: Global flags like config.isDev and config.isServer control whether canonical URLs are emitted and whether certain globals are exposed for debugging.
+
+Theming: useDarkMode controls darkMode in NotionRenderer and applies a body class. ToggleThemeButton in the header switches themes.
+
+SEO for blog posts: PageHead includes schema.org BlogPosting JSON-LD when isBlogPost is true.
+
+--------------------------------------------------------------------------------
+
+# Why no RootLayout?
+
+RootLayout is part of the Next.js App Router (app/ directory) introduced in Next.js 13. This starter uses the [Pages Router], which centralizes “layout” behavior in shared components and the top-level NotionPage. That’s a perfectly valid pattern for pages/.
+
+If you wanted to migrate to App Router
+
+You’d create app/layout.tsx to host global HTML/body wrappers, meta defaults, ThemeProvider, and shared header/footer.
+
+You’d place the Notion page rendering logic into app/[...slug]/page.tsx (or similar), and move PageHead logic into either app/layout.tsx using next/head equivalents or Next 13’s Metadata API.
+
+You’d still reuse the same components (PageHead logic can be adapted to the Metadata API; NotionRenderer usage stays similar).
+
+In short: NotionPage.tsx plus PageHead/PageAside/NotionPageHeader/Footer act together as the layout for content pages. The Pages Router doesn’t require a RootLayout file; the “layout” is composed in the page component and passed into NotionRenderer.
+
+# The Hirerchial Architecture
+
+1. Starts from Notion Page where it imports all components together 
+2. like PageHead , PageAside + notion Renderer
+3. then each one of these component has its own internal functions
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+# site.config.ts file - this file is the single place to customize your site
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+# Here the General Explanation of the Project and How to Set it Up
+
+
 <p align="center">
   <a href="https://transitivebullsh.it/nextjs-notion-starter-kit">
     <img alt="Example article page" src="https://user-images.githubusercontent.com/552829/160132094-12875e09-41ec-450a-80fc-ae8cd488129d.jpg" width="689">

@@ -3,6 +3,21 @@ import { fileURLToPath } from 'node:url'
 
 import bundleAnalyzer from '@next/bundle-analyzer'
 
+
+/*
+
+This config is doing 4 things:
+
+1. Enable bundle analysis optionally
+2. Configure Next.js image optimization for specific hosts
+3. Patch webpack liases to avoid react duplication issues
+4. transpile specific packages that ship untranspiled code
+
+*/
+
+
+
+
 const withBundleAnalyzer = bundleAnalyzer({
   // eslint-disable-next-line no-process-env
   enabled: process.env.ANALYZE === 'true'
