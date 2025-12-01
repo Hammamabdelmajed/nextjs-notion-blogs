@@ -240,8 +240,6 @@ export function NotionPage({
 
   const { isDarkMode } = useDarkMode()
 
-  console.log("Checking the state of dark mode",isDarkMode)
-
   const siteMapPageUrl = React.useMemo(() => {
     const params: any = {}
     if (lite) params.lite = lite
@@ -260,11 +258,6 @@ export function NotionPage({
 
   const showTableOfContents = !!isBlogPost
   const minTableOfContentsItems = 3
-
-  console.log("block", block);
-  console.log("recordMap", recordMap);
-  console.log("isBlogPost", isBlogPost);
-
 
   const pageAside = React.useMemo(
     () => (
@@ -289,21 +282,14 @@ export function NotionPage({
 
   const title = getBlockTitle(block, recordMap) || site.name
 
-  console.log('notion page', {
-    isDev: config.isDev,
-    title,
-    pageId,
-    rootNotionPageId: site.rootNotionPageId,
-    recordMap
-  })
-
-  if (!config.isServer) {
-    // add important objects to the window global for easy debugging
-    const g = window as any
-    g.pageId = pageId
-    g.recordMap = recordMap
-    g.block = block
-  }
+  // useEffect(() => {
+  //   if (!config.isServer) {
+  //     const g = window as any
+  //     g.pageId = pageId
+  //     g.recordMap = recordMap
+  //     g.block = block
+  //   }
+  // }, [pageId, recordMap, block])
 
   const canonicalPageUrl = config.isDev
     ? undefined

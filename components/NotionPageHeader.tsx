@@ -91,7 +91,6 @@ export function NotionPageHeader({
           {navigationLinks
             ?.map((link, index) => {
               if (!link?.pageId && !link?.url) {
-                console.log("yes");
                 return null
               }
 
