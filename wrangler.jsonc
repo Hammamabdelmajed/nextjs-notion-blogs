@@ -1,0 +1,13 @@
+{
+    "$schema": "./node_modules/wrangler/config-schema.json",
+    "main": ".open-next/worker.js", // Specific to your project
+    "name": "nextjs-notion-starter-kit", // Project-specific name
+    "compatibility_date": "2025-03-25", // Can be generic or set to the current date
+    "compatibility_flags": [
+      "nodejs_compat" // Specific if Node.js APIs are used
+    ],
+    "assets": {
+      "directory": ".open-next/assets", // Must match your static assets directory
+      "binding": "ASSETS" // Can be generic but must align with the worker script
+    }
+  }
