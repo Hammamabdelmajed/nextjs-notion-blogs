@@ -32,7 +32,7 @@ export const getStaticProps: GetStaticProps<PageProps, Params> = async (
     const props = await resolveNotionPage(domain, rawPageId)
 
     // revalidating is for purging the data cache and refetching the new data - you use when you want the latest information to be displayed 
-    return { props }
+    return { props , revalidate: 10 }
 
   } catch (err) {
     console.error('page error', domain, rawPageId, err)
