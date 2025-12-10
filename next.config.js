@@ -2,7 +2,6 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 import bundleAnalyzer from '@next/bundle-analyzer'
-import { initOpenNextCloudflareForDev } from "@opennextjs/cloudflare";
 
 
 /*
@@ -22,9 +21,19 @@ const withBundleAnalyzer = bundleAnalyzer({
   enabled: process.env.ANALYZE === 'true'
 })
 
+
 export default withBundleAnalyzer({
+  reactStrictMode: true,
+  swcMinify: true,
+
+  serverExternalPackages: ['ofetch' , 'sharp'],
+
+  // DO NOT force experimental-edge globally
+  // Let OpenNext decide per-route
+  // experimental: { runtime: 'experimental-edge' },
 
   staticPageGenerationTimeout: 300,
+
   images: {
     unoptimized: true,
     remotePatterns: [
@@ -37,34 +46,26 @@ export default withBundleAnalyzer({
     ],
     formats: ['image/avif', 'image/webp'],
     dangerouslyAllowSVG: true,
-    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;"
+    contentSecurityPolicy:
+      "default-src 'self'; script-src 'none'; sandbox;"
   },
 
   webpack: (config) => {
     const dirname = path.dirname(fileURLToPath(import.meta.url))
+
     config.resolve.alias.react = path.resolve(dirname, 'node_modules/react')
     config.resolve.alias['react-dom'] = path.resolve(
       dirname,
       'node_modules/react-dom'
     )
+
     config.resolve.fallback = {
       ...config.resolve.fallback,
-      fs: false, // Ignore 'fs' in the Edge Runtime
-    };
+      fs: false
+    }
+
     return config
   },
 
   transpilePackages: ['react-tweet']
 })
-
-const nextConfig = {
-  experimental: {
-    runtime: 'experimental-edge',
-  },
-  serverExternalPackages: ['ofetch'],
-  reactStrictMode: true,
-  swcMinify: true,
-}
-initOpenNextCloudflareForDev();
-
-export { nextConfig };
