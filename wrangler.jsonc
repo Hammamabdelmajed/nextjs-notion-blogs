@@ -7,8 +7,11 @@
   "assets": { "directory": ".open-next/assets", "binding": "ASSETS" },
   "vars": { "NODE_ENV": "production" },
   "r2_buckets": [
-    { "binding": "R2_CACHE", "bucket_name": "next-notion-incremental-cache" }
-  ],
+  {
+    "binding": "NEXT_INC_CACHE_R2_BUCKET",
+    "bucket_name": "next-notion-incremental-cache"
+  }
+],
   "d1_databases": [
     {
       "binding": "DB",
