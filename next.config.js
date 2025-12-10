@@ -26,7 +26,7 @@ export default withBundleAnalyzer({
   reactStrictMode: true,
   swcMinify: true,
 
-  serverExternalPackages: ['ofetch' , 'sharp'],
+  serverExternalPackages: ['ofetch'],
 
   // DO NOT force experimental-edge globally
   // Let OpenNext decide per-route
