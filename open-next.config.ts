@@ -16,4 +16,5 @@ export default defineCloudflareConfig({
   // }),
   // Disable this if you want to use PPR
   enableCacheInterception: true,
+  
 });

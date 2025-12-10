@@ -46,6 +46,10 @@ export default withBundleAnalyzer({
       dirname,
       'node_modules/react-dom'
     )
+    config.resolve.fallback = {
+      ...config.resolve.fallback,
+      fs: false, // Ignore 'fs' in the Edge Runtime
+    };
     return config
   },
 
