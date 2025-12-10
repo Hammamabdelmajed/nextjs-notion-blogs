@@ -16,10 +16,6 @@
       "database_id": ""
     }
   ],
-  "durable_objects": {
-    "bindings": [{ "name": "QUEUE_DO", "class_name": "QueueDO" }]
-  }, 
-  "migrations": [{ "tag": "v1", "new_classes": ["QueueDO"] }]
 }
 
 
