@@ -16,7 +16,7 @@ import { mapImageUrl } from '@/lib/map-image-url'
 import { notion } from '@/lib/notion-api'
 import { type NotionPageInfo, type PageError } from '@/lib/types'
 
-export const runtime = 'experimental-edge'
+// export const runtime = 'experimental-edge' [Documentation Preference of using Open-Next]
 
 export default async function OGImage(
   req: NextApiRequest,

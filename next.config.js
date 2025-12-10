@@ -2,6 +2,7 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 import bundleAnalyzer from '@next/bundle-analyzer'
+import { initOpenNextCloudflareForDev } from "@opennextjs/cloudflare";
 
 
 /*
@@ -55,3 +56,15 @@ export default withBundleAnalyzer({
 
   transpilePackages: ['react-tweet']
 })
+
+const nextConfig = {
+  experimental: {
+    runtime: 'experimental-edge',
+  },
+  serverExternalPackages: ['ofetch'],
+  reactStrictMode: true,
+  swcMinify: true,
+}
+initOpenNextCloudflareForDev();
+
+export { nextConfig };

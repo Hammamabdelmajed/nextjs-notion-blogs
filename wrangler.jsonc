@@ -1,13 +1,45 @@
 {
-    "$schema": "./node_modules/wrangler/config-schema.json",
-    "main": ".open-next/worker.js", // Specific to your project
-    "name": "nextjs-notion-starter-kit", // Project-specific name
-    "compatibility_date": "2025-03-25", // Can be generic or set to the current date
-    "compatibility_flags": [
-      "nodejs_compat" // Specific if Node.js APIs are used
-    ],
-    "assets": {
-      "directory": ".open-next/assets", // Must match your static assets directory
-      "binding": "ASSETS" // Can be generic but must align with the worker script
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "nextjs-notion-blogs",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2025-03-25",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": { "directory": ".open-next/assets", "binding": "ASSETS" },
+  "vars": { "NODE_ENV": "production" },
+  "r2_buckets": [
+    { "binding": "R2_CACHE", "bucket_name": "next-notion-incremental-cache" }
+  ],
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "next-notion-tag-cache",
+      "database_id": ""
     }
-  }
+  ],
+  "durable_objects": {
+    "bindings": [{ "name": "QUEUE_DO", "class_name": "QueueDO" }]
+  }, 
+  "migrations": [{ "tag": "v1", "new_classes": ["QueueDO"] }]
+}
+
+
+/*
+
+Explanation of the fields used in this wrangler.jsonc file:
+
+- $schema: Specifies the path to the JSON schema for validation.
+- name: The name of the Cloudflare Workers project.
+- main: The entry point for the worker script.
+- compatibility_date: The date for compatibility settings, ensuring the worker behaves as expected with Cloudflare's platform updates.
+- compatibility_flags: Flags to enable specific compatibility features, such as Node.js compatibility.
+- assets: Configuration for static assets, specifying the directory and binding name.
+- vars: Environment variables for the worker, in this case setting NODE_ENV to "production".
+- r2_buckets: Configuration for R2 storage buckets, including the binding name and bucket name.
+- d1_databases: Configuration for D1 databases, including the binding name, database name, and database ID.
+- durable_objects: Configuration for Durable Objects, including bindings for the objects used in the project.
+- migrations: Defines migrations for Durable Objects, specifying tags and new classes to be created.
+
+
+
+
+*/

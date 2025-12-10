@@ -37,3 +37,6 @@ yarn-error.log*
 
 # vercel
 .vercel
+
+# open-next build output
+.open-next/

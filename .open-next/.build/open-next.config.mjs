@@ -1,6 +1,6 @@
 import { createRequire as topLevelCreateRequire } from 'module';const require = topLevelCreateRequire(import.meta.url);import bannerUrl from 'url';const __dirname = bannerUrl.fileURLToPath(new URL('.', import.meta.url));
 
-// node_modules/.pnpm/@opennextjs+cloudflare@1.14.1_wrangler@4.51.0/node_modules/@opennextjs/cloudflare/dist/api/cloudflare-context.js
+// node_modules/@opennextjs/cloudflare/dist/api/cloudflare-context.js
 var cloudflareContextSymbol = Symbol.for("__cloudflare-context__");
 function getCloudflareContext(options = { async: false }) {
   return options.async ? getCloudflareContextAsync() : getCloudflareContextSync();
@@ -84,7 +84,7 @@ You should update your Next.js config file as shown below:
 
 `;
 
-// node_modules/.pnpm/@opennextjs+cloudflare@1.14.1_wrangler@4.51.0/node_modules/@opennextjs/cloudflare/dist/api/overrides/asset-resolver/index.js
+// node_modules/@opennextjs/cloudflare/dist/api/overrides/asset-resolver/index.js
 var resolver = {
   name: "cloudflare-asset-resolver",
   async maybeGetAssetResult(event) {
@@ -142,7 +142,7 @@ function isUserWorkerFirst(runWorkerFirst, pathname) {
 }
 var asset_resolver_default = resolver;
 
-// node_modules/.pnpm/@opennextjs+cloudflare@1.14.1_wrangler@4.51.0/node_modules/@opennextjs/cloudflare/dist/api/config.js
+// node_modules/@opennextjs/cloudflare/dist/api/config.js
 function defineCloudflareConfig(config = {}) {
   const { incrementalCache, tagCache, queue, cachePurge, enableCacheInterception = false, routePreloadingBehavior = "none" } = config;
   return {
@@ -205,7 +205,7 @@ function resolveCdnInvalidation(value = "dummy") {
   return typeof value === "function" ? value : () => value;
 }
 
-// node_modules/.pnpm/@opennextjs+aws@3.9.1/node_modules/@opennextjs/aws/dist/utils/error.js
+// node_modules/@opennextjs/aws/dist/utils/error.js
 var IgnorableError = class extends Error {
   __openNextInternal = true;
   canIgnore = true;
@@ -223,7 +223,7 @@ function isOpenNextError(e) {
   }
 }
 
-// node_modules/.pnpm/@opennextjs+aws@3.9.1/node_modules/@opennextjs/aws/dist/adapters/logger.js
+// node_modules/@opennextjs/aws/dist/adapters/logger.js
 function debug(...args) {
   if (globalThis.openNextDebug) {
     console.log(...args);
@@ -273,7 +273,7 @@ function getOpenNextErrorLogLevel() {
   }
 }
 
-// node_modules/.pnpm/@opennextjs+cloudflare@1.14.1_wrangler@4.51.0/node_modules/@opennextjs/cloudflare/dist/api/overrides/internal.js
+// node_modules/@opennextjs/cloudflare/dist/api/overrides/internal.js
 import { createHash } from "node:crypto";
 var debugCache = (name, ...args) => {
   if (process.env.NEXT_PRIVATE_DEBUG_CACHE) {
@@ -287,61 +287,8 @@ function computeCacheKey(key, options) {
   const hash = createHash("sha256").update(key).digest("hex");
   return `${prefix}/${buildId}/${hash}.${cacheType}`.replace(/\/+/g, "/");
 }
-function isPurgeCacheEnabled() {
-  const cdnInvalidation = globalThis.openNextConfig?.default?.override?.cdnInvalidation;
-  return cdnInvalidation !== void 0 && cdnInvalidation !== "dummy";
-}
-async function purgeCacheByTags(tags) {
-  const { env } = getCloudflareContext();
-  if (env.NEXT_CACHE_DO_PURGE) {
-    const durableObject = env.NEXT_CACHE_DO_PURGE;
-    const id = durableObject.idFromName("cache-purge");
-    const obj = durableObject.get(id);
-    await obj.purgeCacheByTags(tags);
-  } else {
-    await internalPurgeCacheByTags(env, tags);
-  }
-}
-async function internalPurgeCacheByTags(env, tags) {
-  if (!env.CACHE_PURGE_ZONE_ID || !env.CACHE_PURGE_API_TOKEN) {
-    error("No cache zone ID or API token provided. Skipping cache purge.");
-    return "missing-credentials";
-  }
-  let response;
-  try {
-    response = await fetch(`https://api.cloudflare.com/client/v4/zones/${env.CACHE_PURGE_ZONE_ID}/purge_cache`, {
-      headers: {
-        Authorization: `Bearer ${env.CACHE_PURGE_API_TOKEN}`,
-        "Content-Type": "application/json"
-      },
-      method: "POST",
-      body: JSON.stringify({
-        tags
-      })
-    });
-    if (response.status === 429) {
-      error("purgeCacheByTags: Rate limit exceeded. Skipping cache purge.");
-      return "rate-limit-exceeded";
-    }
-    const bodyResponse = await response.json();
-    if (!bodyResponse.success) {
-      error("purgeCacheByTags: Cache purge failed. Errors:", bodyResponse.errors.map((error2) => `${error2.code}: ${error2.message}`));
-      return "purge-failed";
-    }
-    debugCache("purgeCacheByTags", "Cache purged successfully for tags:", tags);
-    return "purge-success";
-  } catch (error2) {
-    console.error("Error purging cache by tags:", error2);
-    return "purge-failed";
-  } finally {
-    try {
-      await response?.body?.cancel();
-    } catch {
-    }
-  }
-}
 
-// node_modules/.pnpm/@opennextjs+cloudflare@1.14.1_wrangler@4.51.0/node_modules/@opennextjs/cloudflare/dist/api/overrides/incremental-cache/r2-incremental-cache.js
+// node_modules/@opennextjs/cloudflare/dist/api/overrides/incremental-cache/r2-incremental-cache.js
 var NAME = "cf-r2-incremental-cache";
 var BINDING_NAME = "NEXT_INC_CACHE_R2_BUCKET";
 var PREFIX_ENV_NAME = "NEXT_INC_CACHE_R2_PREFIX";
@@ -397,100 +344,9 @@ var R2IncrementalCache = class {
 };
 var r2_incremental_cache_default = new R2IncrementalCache();
 
-// node_modules/.pnpm/@opennextjs+cloudflare@1.14.1_wrangler@4.51.0/node_modules/@opennextjs/cloudflare/dist/api/overrides/queue/do-queue.js
-var do_queue_default = {
-  name: "durable-queue",
-  send: async (msg) => {
-    const durableObject = getCloudflareContext().env.NEXT_CACHE_DO_QUEUE;
-    if (!durableObject)
-      throw new IgnorableError("No durable object binding for cache revalidation");
-    const id = durableObject.idFromName(msg.MessageGroupId);
-    const stub = durableObject.get(id);
-    await stub.revalidate({
-      ...msg
-    });
-  }
-};
-
-// node_modules/.pnpm/@opennextjs+cloudflare@1.14.1_wrangler@4.51.0/node_modules/@opennextjs/cloudflare/dist/api/overrides/tag-cache/d1-next-tag-cache.js
-var NAME2 = "d1-next-mode-tag-cache";
-var BINDING_NAME2 = "NEXT_TAG_CACHE_D1";
-var D1NextModeTagCache = class {
-  mode = "nextMode";
-  name = NAME2;
-  async getLastRevalidated(tags) {
-    const { isDisabled, db } = this.getConfig();
-    if (isDisabled || tags.length === 0) {
-      return 0;
-    }
-    try {
-      const result = await db.prepare(`SELECT MAX(revalidatedAt) AS time FROM revalidations WHERE tag IN (${tags.map(() => "?").join(", ")})`).bind(...tags.map((tag) => this.getCacheKey(tag))).run();
-      const timeMs = result.results[0]?.time ?? 0;
-      debugCache("D1NextModeTagCache", `getLastRevalidated tags=${tags} -> ${timeMs}`);
-      return timeMs;
-    } catch (e) {
-      error(e);
-      return 0;
-    }
-  }
-  async hasBeenRevalidated(tags, lastModified) {
-    const { isDisabled, db } = this.getConfig();
-    if (isDisabled || tags.length === 0) {
-      return false;
-    }
-    try {
-      const result = await db.prepare(`SELECT 1 FROM revalidations WHERE tag IN (${tags.map(() => "?").join(", ")}) AND revalidatedAt > ? LIMIT 1`).bind(...tags.map((tag) => this.getCacheKey(tag)), lastModified ?? Date.now()).raw();
-      const revalidated = result.length > 0;
-      debugCache("D1NextModeTagCache", `hasBeenRevalidated tags=${tags} at=${lastModified} -> ${revalidated}`);
-      return revalidated;
-    } catch (e) {
-      error(e);
-      return false;
-    }
-  }
-  async writeTags(tags) {
-    const { isDisabled, db } = this.getConfig();
-    if (isDisabled || tags.length === 0)
-      return Promise.resolve();
-    const nowMs = Date.now();
-    await db.batch(tags.map((tag) => db.prepare(`INSERT INTO revalidations (tag, revalidatedAt) VALUES (?, ?)`).bind(this.getCacheKey(tag), nowMs)));
-    debugCache("D1NextModeTagCache", `writeTags tags=${tags} time=${nowMs}`);
-    if (isPurgeCacheEnabled()) {
-      await purgeCacheByTags(tags);
-    }
-  }
-  getConfig() {
-    const db = getCloudflareContext().env[BINDING_NAME2];
-    if (!db)
-      debugCache("No D1 database found");
-    const isDisabled = Boolean(globalThis.openNextConfig.dangerous?.disableTagCache);
-    return !db || isDisabled ? { isDisabled: true } : {
-      isDisabled: false,
-      db
-    };
-  }
-  getCacheKey(key) {
-    return `${this.getBuildId()}/${key}`.replaceAll("//", "/");
-  }
-  getBuildId() {
-    return process.env.NEXT_BUILD_ID ?? FALLBACK_BUILD_ID;
-  }
-};
-var d1_next_tag_cache_default = new D1NextModeTagCache();
-
 // open-next.config.ts
 var open_next_config_default = defineCloudflareConfig({
-  incrementalCache: r2_incremental_cache_default,
-  queue: do_queue_default,
-  // This is only required if you use On-demand revalidation
-  tagCache: d1_next_tag_cache_default,
-  //If you don't use `revalidatePath`, you can also filter internal soft tags using the `softTagFilter`
-  // tagCache: withFilter({
-  //   tagCache: d1NextTagCache,
-  //   filterFn: softTagFilter,
-  // }),
-  // Disable this if you want to use PPR
-  enableCacheInterception: true
+  incrementalCache: r2_incremental_cache_default
 });
 export {
   open_next_config_default as default
