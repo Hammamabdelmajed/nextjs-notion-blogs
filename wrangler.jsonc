@@ -1,27 +1,32 @@
 {
-  "$schema": "./node_modules/wrangler/config-schema.json",
-  "name": "nextjs-notion-blogs",
-  "main": ".open-next/worker.js",
-  "compatibility_date": "2025-03-25",
-  "compatibility_flags": ["nodejs_compat"],
-  "assets": { "directory": ".open-next/assets", "binding": "ASSETS" },
-  "vars": { "NODE_ENV": "production" },
-  "r2_buckets": [
-  {
-    "binding": "NEXT_INC_CACHE_R2_BUCKET",
-    "bucket_name": "next-notion-incremental-cache"
-  }
-],
-  "d1_databases": [
-    {
-      "binding": "DB",
-      "database_name": "next-notion-tag-cache",
-      "database_id": ""
-    }
-  ],
+	"$schema": "./node_modules/wrangler/config-schema.json",
+	"name": "legoenginethinkblogwebsite",
+	"main": ".open-next/worker.js",
+	"compatibility_date": "2025-03-25",
+	"compatibility_flags": [
+		"nodejs_compat"
+	],
+	"assets": {
+		"directory": ".open-next/assets",
+		"binding": "ASSETS"
+	},
+	"vars": {
+		"NODE_ENV": "production"
+	},
+	//   "r2_buckets": [   Bucket name mismatch to be reolved later
+	//   {
+	//     "binding": "NEXT_INC_CACHE_R2_BUCKET",
+	//     "bucket_name": "next-notion-incremental-cache"
+	//   }
+	// ],
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "next-notion-tag-cache",
+			"database_id": "2b4a0da3-1684-4e27-bc09-9f2c57330384"
+		}
+	],
 }
-
-
 /*
 
 Explanation of the fields used in this wrangler.jsonc file:
